@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: the_rails_way
+      POSTGRES_USER: the_rails_way
+      POSTGRES_PASSWORD: ${THE_RAILS_WAY_DATABASE_PASSWORD}
+    ports:
+      - "5430:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U the_rails_way"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rails:
+    build: .
+    command: ./bin/thrust ./bin/rails server
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: production
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: the_rails_way
+      DATABASE_USERNAME: the_rails_way
+      DATABASE_PASSWORD: ${THE_RAILS_WAY_DATABASE_PASSWORD}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      # Add any other env vars as needed
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - the_rails_way_storage:/rails/storage
+
+  migrate:
+    build: .
+    command: ./bin/rails db:migrate
+    environment:
+      RAILS_ENV: production
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: the_rails_way
+      DATABASE_USERNAME: the_rails_way
+      DATABASE_PASSWORD: ${THE_RAILS_WAY_DATABASE_PASSWORD}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - the_rails_way_storage:/rails/storage
+
+volumes:
+  the_rails_way_storage:
+  postgres_data:
