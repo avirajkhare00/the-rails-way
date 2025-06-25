@@ -1,24 +1,17 @@
-# README
+# The Rails Way
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Development
 
-Things you may want to cover:
+set the following environment variables:
 
-* Ruby version
+```bash
+THE_RAILS_WAY_DATABASE_PASSWORD=
+RAILS_MASTER_KEY=
+RAILS_ENV=
+```
 
-* System dependencies
+run the following command to start the application:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+docker compose up
+```
