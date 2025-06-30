@@ -11,4 +11,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  get '/ping', to: proc { [200, { 'Content-Type' => 'application/json' }, [{ data: 'pong' }.to_json]] }
+
+  resources :posts, only: [:index, :show, :create, :update, :destroy]
+
+  resources :users, param: :username, only: [:index, :show, :create, :update, :destroy] do
+    get 'posts', to: 'users#posts', on: :member
+  end
 end
