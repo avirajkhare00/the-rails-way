@@ -73,3 +73,7 @@ This is a blog app that allows users to create, read, update, and delete blog po
  - 200 OK
  - 201 Created
  - 404 Not Found
+
+### Note
+
+**Please use rails generator commands where possible.**
